@@ -8,7 +8,7 @@ import { frontendUrl } from "./config/keys.js";
 //import mongodb connection
 
 import connectMongodb from "./init/mongodb.js";
-import { certificateRoute } from "./routes/index.js";
+import { certificateRoute, fileRoute, projectRoute, resumeRoute } from "./routes/index.js";
 
 //import routes
 

@@ -1,6 +1,6 @@
-import fileController from './fileController';
-import projectController from './projectController';
-import certificateController from './certificate';
-import resumeController from './resume';
+import fileController from './file.js';
+import projectController from './project.js';
+import certificateController from './certificate.js';
+import resumeController from './resume.js';
 
 export {fileController, projectController, certificateController, resumeController};

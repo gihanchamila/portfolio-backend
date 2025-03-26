@@ -8,10 +8,7 @@ const connectMongodb = async () => {
             throw new Error("MongoDB connection URL is undefined! Check environment variables.");
         }
 
-        await mongoose.connect(connectionUrl, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        await mongoose.connect(connectionUrl);
 
         console.log("Database connected successfully!");
     } catch (error) {
