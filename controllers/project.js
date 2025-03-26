@@ -6,15 +6,15 @@ const projectController = {
 
     createProject : async (req, res, next) => {
 
-        const { title, subtitle, description, projectUrl, githubUrl, /* file  */} = req.body;
+        const { title, subtitle, description, projectUrl, githubUrl, file } = req.body;
 
-        /* if(file){
+        if(file){
             const isFileExist = await File.findById(file)
             if(!isFileExist){
                 res.code = 404;
                 throw new Error("File not found")
             }
-        } */
+        }
 
         const createProject = new Project({
             title,
@@ -22,7 +22,7 @@ const projectController = {
             description,
             projectUrl,
             githubUrl,
-
+            file
         })
 
         const createdProject = await createProject.save();

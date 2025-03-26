@@ -6,6 +6,6 @@ export const createProjectValidator = [
     check("description").notEmpty().withMessage("Description is required"),
     check("projectUrl").notEmpty().withMessage("projectUrl is required"),
     check("githubUrl").notEmpty().withMessage("githubUrl is required"),
-    /* check("file").notEmpty().withMessage("file is required"), */
+    check("file").notEmpty().withMessage("file is required"),
 ]
 
