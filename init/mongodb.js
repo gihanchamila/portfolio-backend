@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { connectionUrl } from "../config/kyes.js";
+import { connectionUrl } from "../config/keys.js";
 
 // connect mongodb
 const connectMongodb = async () => {
