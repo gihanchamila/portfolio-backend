@@ -1,6 +1,6 @@
 import http from 'http';
 
-import app from './app';
+import app from './app.js';
 import {port} from './config.keys';
 
 // create a server and pass the express app to it
