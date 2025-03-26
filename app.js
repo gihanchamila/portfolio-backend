@@ -8,6 +8,7 @@ import { frontendUrl } from "./config/keys.js";
 //import mongodb connection
 
 import connectMongodb from "./init/mongodb.js";
+import { certificateRoute } from "./routes/index.js";
 
 //import routes
 
@@ -36,6 +37,12 @@ app.use(bodyParser.urlencoded({limit : "500mb", extended : true}));
 app.use(morgan("dev"));
 
 //routes
+
+app.use("/api/v1/certificate", certificateRoute)
+app.use("/api/v1/file", fileRoute)
+app.use("/api/v1/project", projectRoute)
+app.use("/api/v1/resume", resumeRoute)
+
 // This routes will used for online servers
 
 //Not found controller
