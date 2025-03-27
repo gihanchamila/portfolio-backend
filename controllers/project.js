@@ -42,7 +42,7 @@ const projectController = {
 
             const { id } = req.params;
 
-            const project = await Project.findById(id)
+            const project = await Project.findById(id).populate("file");
             notFoundItem(project)
 
             res.status(200).json({
