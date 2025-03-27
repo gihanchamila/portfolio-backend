@@ -14,7 +14,7 @@ const fileController = {
     uploadFile: async (req, res, next) => {
         try {
             // Check if the file is provided in the request
-            const { base64Image } = req.body;
+            const { base64Image, isResume } = req.body;
             const { file } = req;
             
             // Make sure the file is either base64 or a file object
@@ -27,7 +27,7 @@ const fileController = {
                 const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, "");
                 buffer = Buffer.from(base64Data, 'base64');
                 ext = base64Image.split(';')[0].split('/')[1]; // Extract extension without leading dot
-                isValidExt = validateExtention(`.${ext}`);
+                isValidExt = isResume ? ext === 'pdf' : validateExtention(`.${ext}`);
 
                 if (!isValidExt) {
                     return res.status(400).json({ code: 400, status: false, message: "Only 'jpg', 'jpeg' or 'png' is allowed" });
@@ -38,7 +38,7 @@ const fileController = {
                 // Extract buffer, extension and validate extension
                 buffer = file.buffer; 
                 ext = path.extname(file.originalname).replace('.', ''); // Get extension without leading dot
-                isValidExt = validateExtention(`.${ext}`);
+                isValidExt = isResume ? ext === 'pdf' : validateExtention(`.${ext}`);
                 if (!isValidExt) {
                     return res.status(400).json({ code: 400, status: false, message: "Only 'jpg', 'jpeg' or 'png' is allowed" });
                 }
