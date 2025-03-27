@@ -35,7 +35,7 @@ const certificateController = {
             const { id } = req.params;
 
             const certification = await Certification.findById(id)
-            notFoundItem(certification)
+            notFoundItem(certification, res, "Certification")
 
             res.status(200).json({
                 code: 200,
@@ -71,7 +71,7 @@ const certificateController = {
             .skip((pageNumber - 1) * sizeNumber)
             .limit(sizeNumber)
 
-            notFoundItem(certifications)
+            notFoundItem(certifications, res, "Certifications")
 
             res.status(200).json({
                 code : 200, 
@@ -93,7 +93,7 @@ const certificateController = {
 
             const certification = await Certification.findById(id)
 
-            notFoundItem(certification)
+            notFoundItem(certification, res, "Certification")
 
             certification.title = title || certification.title
             certification.organization = organization || certification.organization
@@ -121,7 +121,7 @@ const certificateController = {
                 const { id } = req.params;
     
                 const certification = await Certification.findByIdAndDelete(id)
-                notFoundItem(certification)
+                notFoundItem(certification, res, "Certification")
     
                 res.status(200).json({
                     code: 200,

@@ -13,7 +13,7 @@ const projectController = {
             const { title, subtitle, description, projectUrl, githubUrl, file } = req.body;
             if(file){
                 const isFileExist = await File.findById(file)
-                notFoundItem(isFileExist)
+                notFoundItem(isFileExist, res, "File")
             }
     
             const newProject = new Project({
@@ -41,9 +41,9 @@ const projectController = {
         try{
 
             const { id } = req.params;
-
+            
             const project = await Project.findById(id).populate("file");
-            notFoundItem(project)
+            notFoundItem(project, res, "Project")
 
             res.status(200).json({
                 code: 200,
@@ -79,7 +79,7 @@ const projectController = {
             .skip((pageNumber - 1) * sizeNumber)
             .limit(sizeNumber)
 
-            notFoundItem(projects)
+            notFoundItem(projects, res, "Projects")
 
             res.status(200).json({
                 code : 200, 
@@ -101,12 +101,12 @@ const projectController = {
 
             if (file) {
                 const isFileExist = await File.findById(file);
-                notFoundItem(isFileExist)
+                notFoundItem(isFileExist, res, "File");
             }
 
             const project = await Project.findById(id)
 
-            notFoundItem(project)
+            notFoundItem(project, res, "Project")
 
             project.title = title || project.title;
             project.subtitle = subtitle || project.subtitle;
@@ -135,7 +135,7 @@ const projectController = {
             const { id } = req.params;
 
             const project = await Project.findByIdAndDelete(id)
-            notFoundItem(project)
+            notFoundItem(project, res, "Project")
 
             res.status(200).json({
                 code: 200,
