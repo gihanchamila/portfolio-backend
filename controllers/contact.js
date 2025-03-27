@@ -5,33 +5,41 @@ import { sendMail } from '../utils/sendEmail.js'
 
 const contactController = {
 
-    createContact : async (req, res, next) => {
-        try{
+    createContact: async (req, res, next) => {
+        try {
             const { name, email, message } = req.body;
-            
+
+            // Check if the user is verified
+            const user = await Contact.findOne({ email });
+            if (!user || !user.isVerified) {
+                return res.status(400).json({
+                    status: false,
+                    message: "Email not verified. Please verify your email first."
+                });
+            }
+
             const newContact = new Contact({
                 name,
                 email,
                 message
-            })
-            
+            });
+
             const createdContact = await newContact.save();
 
             await sendMail({
-                emailTo : email, 
-                subject : "Message Received", 
-                content : "Your form has been submitted successfully", 
-                name : name
-            })
+                emailTo: email,
+                subject: "Message Received",
+                content: "Your form has been submitted successfully",
+                name: name
+            });
 
             res.status(201).json({
-                status : true, 
-                message : "Message sent successfully", 
-                data : createdContact
-            })
-        }
-        catch(error){
-            next(error)
+                status: true,
+                message: "Message sent successfully",
+                data: createdContact
+            });
+        } catch (error) {
+            next(error);
         }
     },
 
