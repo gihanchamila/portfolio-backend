@@ -16,6 +16,13 @@ const resumeController = {
                 });
             }
 
+            if (file.mimetype !== "application/pdf") {
+                return res.status(400).json({
+                    status: false,
+                    message: "Invalid file type. Only PDF files are allowed.",
+                });
+            }
+
             // Upload the file to S3
             const key = await uploadFileToS3({ file, ext: ".pdf" });
 
