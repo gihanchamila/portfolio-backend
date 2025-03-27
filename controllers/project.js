@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 import File from "../models/File.js";
 import Project from "../models/Project.js"
 
@@ -75,9 +73,7 @@ const projectController = {
             const total = await Project.countDocuments(query)
             const pages = Math.ceil(total / sizeNumber)
 
-            const projects = await Project.find(query)
-            .skip((pageNumber - 1) * sizeNumber)
-            .limit(sizeNumber)
+            const projects = await Project.find(query).lean().skip((pageNumber - 1) * sizeNumber).limit(sizeNumber);
 
             notFoundItem(projects, res, "Projects")
 

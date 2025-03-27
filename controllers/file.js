@@ -4,7 +4,6 @@ import sharp from "sharp";
 
 import File from "../models/File.js";
 
-import notFoundItem from "../utils/notFoundItem.js";
 import { validateExtention } from "../validators/file.js";
 import { uploadFileToS3, signedUrl, deleteFilesFromS3 } from "../utils/awsS3.js";
 

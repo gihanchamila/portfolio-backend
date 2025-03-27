@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const resumeSchema = mongoose.Schema({
-    title: { type: String}, 
+    title: { type: String, index: true}, 
     file: { type: String, required: true }, 
 }, { timestamps: true });
 

@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 import Certification from "../models/Certification.js";
 import notFoundItem from "../utils/notFoundItem.js";
 

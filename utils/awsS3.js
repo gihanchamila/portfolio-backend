@@ -25,7 +25,8 @@ export const uploadFileToS3 = async({file, ext}) => {
         Bucket : awsBucketName,
         Body : file.buffer,
         Key,
-        ContentType : file.mime
+        ContentType : file.mime,
+        CacheControl: "max-age=31536000"
     }
 
     const command = new PutObjectCommand(params)
