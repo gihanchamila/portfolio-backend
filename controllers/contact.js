@@ -1,0 +1,64 @@
+import Contact from '../models/Contact.js'
+import notFoundItem from '../utils/notFoundItem.js'
+
+const contactController = {
+
+    createContact : async (req, res, next) => {
+        try{
+            const { name, email, message } = req.body;
+            
+            const newContact = new Contact({
+                name,
+                email,
+                message
+            })
+
+            const createdContact = await newContact.save();
+            res.status(201).json({
+                status : true, 
+                message : "Message sent successfully", 
+                data : createdContact
+            })
+        }
+        catch(error){
+            next(error)
+        }
+    },
+
+    getAllContacts : async (req, res, next) => {
+        try{
+            const {size, q, page} = req.query;
+            const pageNumber = parseInt(page) || 1
+            const sizeNumber = parseInt(size) || 4
+            let query = {}
+
+            if(q){
+                const search = new RegExp(q, "i")
+                query = {
+                    $or: [{title : search}]
+                }
+            }
+
+            const total = await Contact.countDocuments(query)
+
+            const pages = Math.ceil(total / sizeNumber)
+            
+            const contacts = await Contact.find(query).lean().skip((pageNumber - 1) * sizeNumber).limit(sizeNumber);
+
+            notFoundItem(contacts, res, "Contacts")
+
+            res.status(200).json({
+                code : 200, 
+                status : true, 
+                message : "Get projects successfully", 
+                data : {contacts, total, pages}
+            })
+        }
+        catch(error){
+            next(error)
+        }
+    },
+
+}
+
+export default contactController;
