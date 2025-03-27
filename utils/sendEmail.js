@@ -1,5 +1,5 @@
 import nodemail from "nodemailer"
-import { senderEmail, emailPassword } from "../config/kyes.js"
+import { senderEmail, emailPassword } from "../config/keys.js"
 
 export const sendMail = async ({emailTo, subject, content, name}) => {
 

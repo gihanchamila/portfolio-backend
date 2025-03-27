@@ -1,5 +1,6 @@
 import Contact from '../models/Contact.js'
 import notFoundItem from '../utils/notFoundItem.js'
+import { sendMail } from '../utils/sendEmail.js'
 
 const contactController = {
 
@@ -14,6 +15,12 @@ const contactController = {
             })
 
             const createdContact = await newContact.save();
+            sendMail({
+                emailTo : email, 
+                subject : "Message Received", 
+                content : "Your form has been submitted successfully", 
+                name : name
+            })
             res.status(201).json({
                 status : true, 
                 message : "Message sent successfully", 
