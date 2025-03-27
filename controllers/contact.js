@@ -15,13 +15,18 @@ const contactController = {
             })
 
             const createdContact = await newContact.save();
-            
+
             sendMail({
                 emailTo : email, 
                 subject : "Message Received", 
                 content : "Your form has been submitted successfully", 
                 name : name
             })
+
+            if(sendMail){
+                createdContact.emailSent = true
+                await createdContact.save()
+            }
 
             res.status(201).json({
                 status : true, 
