@@ -5,6 +5,8 @@ const contactSchema = mongoose.Schema({
     email: { type: String, required: true },
     message: { type: String, required: true },
     emailSent: { type: Boolean, default: false },
+    code: { type: String, default: null },
+    isVerified: { type: Boolean, default: false },
 }, { timestamps: true });
 
 const Contact = mongoose.model("contact", contactSchema);
