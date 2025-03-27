@@ -7,7 +7,7 @@ import { validate } from "../validators/validate.js";
 
 const router = express.Router();
 
-router.post("/create-ceritificate", createCertificationValidator, validate, certificateController.createProject);
+router.post("/create-certificate", createCertificationValidator, validate, certificateController.createCertificate);
 router.get("/get-certificate/:id", idValidator, validate, certificateController.getCertificate);
 router.get("/get-certificates", certificateController.getCertificates);
 router.put("/update-certificate/:id", idValidator, validate, certificateController.updateCertificate);
