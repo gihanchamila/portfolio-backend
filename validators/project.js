@@ -1,4 +1,4 @@
-import { check } from "express-validator";
+import { check, param } from "express-validator";
 
 export const createProjectValidator = [
     check("title").notEmpty().withMessage("Title is required"),
@@ -9,3 +9,11 @@ export const createProjectValidator = [
     check("file").notEmpty().withMessage("file is required"),
 ]
 
+export const updateProjectValidator = [
+    check("title").optional(),
+    check("subtitle").optional(),
+    check("description").optional(),
+    check("projectUrl").optional(),
+    check("githubUrl").optional(),
+    check("file").optional(),
+]

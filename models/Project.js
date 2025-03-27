@@ -8,8 +8,7 @@ const projectSchema = mongoose.Schema({
     link: { type: String }, // Project URL
     github: { type: String }, // GitHub link (if public)
     file : {type : mongoose.Types.ObjectId, ref : "file"},
-    date: { type: Date, default: Date.now }
-})
+}, { timestamps: true });
 
 const Project = mongoose.model("project", projectSchema);
 export default Project;
