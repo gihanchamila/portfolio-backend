@@ -13,10 +13,7 @@ const projectController = {
             const { title, subtitle, description, projectUrl, githubUrl, file } = req.body;
             if(file){
                 const isFileExist = await File.findById(file)
-                if(!isFileExist){
-                    res.code = 404;
-                    throw new Error("File not found")
-                }
+                notFoundItem(isFileExist)
             }
     
             const newProject = new Project({
@@ -151,7 +148,6 @@ const projectController = {
             next(error)
         }
     }
-
 
 }
 
