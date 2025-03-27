@@ -19,29 +19,71 @@ export const sendMail = async ({emailTo, subject, content, name}) => {
             subject,
             html : 
                     `<!DOCTYPE html>
-                <html>
-                    <head>
-                        <meta charset="UTF-8">
-                        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                        <title>${content}</title>
-                    </head>
-                    <body style="margin: 0; padding: 0; background-color: #f9f9f9;">
-                        <div style="max-width: 600px; margin: 20px auto; background-color: #ffffff; border: 1px solid #e0e0e0; border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
-                            <div style="background-color: #1D4ED8; color: white; padding: 20px; text-align: center; border-radius: 8px 8px 0 0;">
-                                <h2 style="margin: 0;">Message Received</h2>
-                            </div>
-                            <div style="padding: 20px;">
-                                <p style="margin: 0; font-size: 16px;">Hello, ${name}</p>
-                                <p style="margin: 10px 0;">Thank you for reaching out to me. I have received your message and will reply as soon as possible. I appreciate your patience.</p>
-                                <p style="margin: 10px 0;">This is an auto-generated message, so please do not reply to this email.</p>
-                                <p style="margin: 10px 0;">Best regards,<br>Gihan Chamila</p>
-                            </div>
-                            <div style="text-align: center; font-size: 12px; color: #888; padding: 20px;">
-                                <p style="margin: 0;">Need help? Contact our support team at support@omni.com</p>
-                            </div>
-                        </div>
-                    </body>
-                </html>` 
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>${content}</title>
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                margin: 0;
+                padding: 0;
+                background-color: #f4f7fc;
+            }
+            .container {
+                max-width: 600px;
+                margin: 30px auto;
+                background-color: #ffffff;
+                border-radius: 8px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                overflow: hidden;
+            }
+            .header {
+                background-color: #4CAF50;
+                color: white;
+                text-align: center;
+                padding: 20px 0;
+            }
+            .header h2 {
+                margin: 0;
+                font-size: 24px;
+            }
+            .content {
+                padding: 30px;
+                font-size: 16px;
+                color: #333;
+            }
+            .content p {
+                margin-bottom: 15px;
+                line-height: 1.6;
+            }
+            .footer {
+                background-color: #f0f0f0;
+                text-align: center;
+                font-size: 12px;
+                padding: 20px 0;
+                color: #888;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <h2>Message Received</h2>
+            </div>
+            <div class="content">
+                <p>Hello, ${name}</p>
+                <p>Thank you for reaching out to me. I have received your message and will reply as soon as possible. I appreciate your patience.</p>
+                <p>This is an auto-generated message, so please do not reply to this email.</p>
+                <p>Best regards,<br>Gihan Chamila</p>
+            </div>
+            <div class="footer">
+                <p>If you need further assistance, please feel free to contact me again.</p>
+            </div>
+        </div>
+    </body>
+</html>` 
         }
         await transporter.sendMail(message)
     } catch(error){
