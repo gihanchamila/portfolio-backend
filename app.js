@@ -10,7 +10,7 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 import connectMongodb from "./init/mongodb.js";
 
 //import routes
-import { certificateRoute, fileRoute, projectRoute, resumeRoute, contactRoute } from "./routes/index.js";
+import { certificateRoute, fileRoute, projectRoute, resumeRoute, contactRoute, userRoute } from "./routes/index.js";
 
 //load environment variables
 dotenv.config();
@@ -41,6 +41,8 @@ app.use("/api/v1/file", fileRoute)
 app.use("/api/v1/project", projectRoute)
 app.use("/api/v1/resume", resumeRoute)
 app.use("/api/v1/connect", contactRoute)
+app.use("/api/v1/connect", contactRoute)
+app.use("/api/v1/user", userRoute)
 
 //Not found controller
 
