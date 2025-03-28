@@ -2,6 +2,7 @@ import Contact from '../models/Contact.js'
 import { generateCode } from '../utils/generateCode.js';
 import notFoundItem from '../utils/notFoundItem.js'
 import { sendMail } from '../utils/sendEmail.js'
+import User from '../models/User.js';
 
 const contactController = {
 
@@ -10,7 +11,7 @@ const contactController = {
             const { name, email, message } = req.body;
 
             // Check if the user is verified
-            const user = await Contact.findOne({ email });
+            const user = await User.findOne({ email });
             if (!user || !user.isVerified) {
                 return res.status(400).json({
                     status: false,
@@ -24,14 +25,18 @@ const contactController = {
                 message
             });
 
-            const createdContact = await newContact.save();
-
             await sendMail({
                 emailTo: email,
                 subject: "Message Received",
                 content: "Your form has been submitted successfully",
-                name: name
+                name
             });
+
+            if(sendMail){
+                newContact.emailSent = true
+            }
+
+            const createdContact = await newContact.save();
 
             res.status(201).json({
                 status: true,

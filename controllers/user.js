@@ -1,17 +1,19 @@
-import User from "../models/User";
+import { generateCode } from "../utils/generateCode.js";
+import { sendMail } from "../utils/sendEmail.js";
+import User from "../models/User.js";
+import Contact from "../models/Contact.js";
+import notFoundItem from "../utils/notFoundItem.js";
 
 const userController = {
     sendVerificationCode: async (req, res, next) => {
         try {
             const { email } = req.body;
 
-            // Generate a random verification code
-            const code = generateCode(6); // Assuming generateCode generates a 6-digit code
+            const code = generateCode(6);
 
-            // Check if the user already exists
-            let user = await Contact.findOne({ email });
+            let user = await User.findOne({ email });
             if (!user) {
-                user = new Contact({ email, code, isVerified: false });
+                user = new User({ email, code, isVerified: false });
             } else {
                 user.code = code;
                 user.isVerified = false;
@@ -19,12 +21,12 @@ const userController = {
 
             await user.save();
 
-            // Send the verification code via email
             await sendMail({
                 emailTo: email,
                 subject: "Email Verification Code",
                 content: `Your verification code is: ${code}`,
-                name: "User"
+                name: "User",
+                code
             });
 
             res.status(200).json({
@@ -40,7 +42,7 @@ const userController = {
         try {
             const { email, code } = req.body;
 
-            const user = await Contact.findOne({ email });
+            const user = await User.findOne({ email });
 
             notFoundItem(user, res, "User");
 

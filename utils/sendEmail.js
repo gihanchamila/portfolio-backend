@@ -43,7 +43,7 @@ export const sendMail = async ({ emailTo, subject, content, name, code }) => {
                                 </div>
                                 <div class="content">
                                     <p>Hello, ${name}</p>
-                                    <p>To complete the setup of Two-Factor Authentication on your account, please use the following verification code:</p>
+                                    <p>To complete the email verification, please use the following verification code:</p>
                                     <div style="font-size: 24px; font-weight: bold; color: #333; text-align: center; margin: 20px 0;">${code}</div>
                                     <p>This code is valid for the next 10 minutes. Please do not share this code with anyone for your account's security.</p>
                                     <p>If you did not request this verification, please ignore this email.</p>
