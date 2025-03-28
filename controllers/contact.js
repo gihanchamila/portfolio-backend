@@ -10,7 +10,6 @@ const contactController = {
         try {
             const { name, email, message } = req.body;
 
-            // Check if the user is verified
             const user = await User.findOne({ email });
             if (!user || !user.isVerified) {
                 return res.status(400).json({
