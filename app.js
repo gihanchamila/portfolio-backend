@@ -41,7 +41,6 @@ app.use("/api/v1/file", fileRoute)
 app.use("/api/v1/project", projectRoute)
 app.use("/api/v1/resume", resumeRoute)
 app.use("/api/v1/connect", contactRoute)
-app.use("/api/v1/connect", contactRoute)
 app.use("/api/v1/user", userRoute)
 
 //Not found controller
