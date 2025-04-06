@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     },
     isVerified: { type: Boolean, default: false }, 
     code: { type: String }, 
+    lastCodeSentAt: { type: Date, default: null },
 });
 
 const User = mongoose.model('user', userSchema);
