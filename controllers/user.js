@@ -12,21 +12,21 @@ const userController = {
             const code = generateCode(6);
     
             let user = await User.findOne({ email });
-            // const now = new Date().getTime();
-            // const cooldownPeriod = 1 * 60 * 1000; // 1 minute
+            const now = new Date().getTime();
+            const cooldownPeriod = 1 * 60 * 1000; // 1 minute
 
             if (user) {
-                // const cooldownLimit = new Date(now - cooldownPeriod);
-                // if (user.lastCodeSentAt && user.lastCodeSentAt > cooldownLimit) {
-                //     return res.status(429).json({
-                //         status: false,
-                //         message: "Verification code was already sent. Please wait 10 minutes before requesting a new code."
-                //     });
-                // }
+                const cooldownLimit = new Date(now - cooldownPeriod);
+                if (user.lastCodeSentAt && user.lastCodeSentAt > cooldownLimit) {
+                    return res.status(429).json({
+                        status: false,
+                        message: "Verification code was already sent. Please wait 10 minutes before requesting a new code."
+                    });
+                }
     
                 user.code = code;
                 user.isVerified = false;
-                // user.lastCodeSentAt = now; 
+                user.lastCodeSentAt = now; 
             } else {
                 user = new User({ email, code, isVerified: false, lastCodeSentAt: now });
             }
