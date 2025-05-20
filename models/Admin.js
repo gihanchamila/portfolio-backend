@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 const adminSchema = mongoose.Schema({
     firstName : {type : String, required : true },
@@ -9,3 +9,6 @@ const adminSchema = mongoose.Schema({
 }, {
     Timestamp : true
 })
+
+const Admin = mongoose.model('admin', adminSchema)
+export default Admin
