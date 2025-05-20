@@ -1,4 +1,5 @@
 import Admin from "../models/Admin";
+import comparePassword from "../utils/comparePassword";
 import hashPassword from "../utils/hashPassword";
 
 const adminController = {
@@ -28,6 +29,29 @@ const adminController = {
                 message : "Admin added successfully", 
                 data : createdAdmin
             })
+
+        }catch(error){
+            next(error)
+        }
+    },
+
+    signIn : async (req, res, next) => {
+        try{
+
+            const {email, password} = req.body;
+
+            const user = await Admin.findOne({email})
+            if(!user){
+                res.status(401).json({message : "Invalid credentials"})
+            }
+
+            const match = await comparePassword(password, user.password)
+            if(!match){
+                res.status(401).json({message : "Invalid credentials"})
+            }
+
+            const token = generateToken(user)
+            
 
         }catch(error){
             next(error)
