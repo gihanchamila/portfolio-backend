@@ -60,7 +60,7 @@ const projectController = {
 
             const {size, q, page} = req.query;
             const pageNumber = parseInt(page) || 1
-            const sizeNumber = parseInt(size) || 4
+            const sizeNumber = parseInt(size) || 3
             let query = {}
 
             if(q){
