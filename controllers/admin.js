@@ -1,11 +1,12 @@
-import Admin from "../models/Admin";
-import comparePassword from "../utils/comparePassword";
-import hashPassword from "../utils/hashPassword";
+import Admin from "../models/Admin.js";
+import comparePassword from "../utils/comparePassword.js";
+import hashPassword from "../utils/hashPassword.js";
+import generateToken from "../utils/generateToken.js"
 
 const adminController = {
     signUp : async (req, res, next) => {
         try {
-            const {firstName, lastName, email, role, password} = req.body
+            const {firstName, lastName, email, role, password} = req.body;
 
             const isEmailExist = await Admin.findOne({email})
             if(isEmailExist){
@@ -51,10 +52,18 @@ const adminController = {
             }
 
             const token = generateToken(user)
-            
+
+            res.status(200).json({
+                code: 200,
+                status: true,
+                message: "User signin successful",
+                data: { token, user},
+            });
 
         }catch(error){
             next(error)
         }
     }
 }
+
+export default adminController

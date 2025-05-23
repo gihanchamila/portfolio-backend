@@ -5,11 +5,13 @@ import upload from "../middlewares/upload.js";
 
 import {resumeController} from "../controllers/index.js";
 import { validate } from "../validators/validate.js";
+import { isAdmin } from "../middlewares/isAdmin.js";
+import { isAuth } from "../middlewares/isAuth.js";
 
 
 const router = express.Router();
 
-router.post("/upload", authenticateAPIKey, upload.single("resume"), resumeController.uploadResume);
+router.post("/upload", isAuth, isAdmin, upload.single("resume"), resumeController.uploadResume);
 router.get("/download/:id", idValidator, validate, resumeController.downloadResume);
 
 export default router;
