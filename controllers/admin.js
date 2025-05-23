@@ -53,11 +53,13 @@ const adminController = {
 
             const token = generateToken(user)
 
+            const { password: _, __v, ...safeUser } = user.toObject();
+
             res.status(200).json({
                 code: 200,
                 status: true,
                 message: "User signin successful",
-                data: { token, user},
+                data: { token, user: safeUser },
             });
 
         }catch(error){
