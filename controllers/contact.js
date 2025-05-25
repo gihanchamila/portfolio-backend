@@ -72,7 +72,7 @@ const contactController = {
             res.status(200).json({
                 code : 200, 
                 status : true, 
-                message : "Get projects successfully", 
+                message : "Get messages successfully", 
                 data : {contacts, total, pages}
             })
         }
@@ -80,9 +80,6 @@ const contactController = {
             next(error)
         }
     },
-
-
-    
 }
 
 export default contactController;
