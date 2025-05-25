@@ -90,25 +90,22 @@ const resumeController = {
     deleteResume : async (req, res, next) => {
         try{
             
-            const {key} = req.params;
-            if(!key){
-                res.code = 404;
-                throw new Error("Key not found");
-            }
-
-            const file  = await deleteFilesFromS3(key);
-
-            if(!file){
-                return res.status(404).json({
-                    status: false,
-                    message: "File not found or failed to delete",
-                });
-            }
+            const { key } = req.params;
+            const file = await Resume.findOne({
+                file: key
+            });
             
+            if(!key || !file){
+                res.code = 404;
+                throw new Error("Resume not found");
+            }
+
+            await deleteFilesFromS3(key);
+            await Resume.findOneAndDelete({ file: key });
+
             res.status(200).json({
                 status: true,
                 message: "Resume deleted successfully",
-                data: { file },
             });
 
         }catch(error){
