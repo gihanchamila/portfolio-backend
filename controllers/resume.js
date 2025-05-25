@@ -99,10 +99,10 @@ const resumeController = {
             const file  = await deleteFilesFromS3(key);
             res.status(200).json({
                 status: true,
-                message: "Resume download link generated successfully",
+                message: "Resume deleted successfully",
                 data: { file },
             });
-            
+
         }catch(error){
             next(error);
         }
