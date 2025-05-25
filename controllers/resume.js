@@ -1,7 +1,7 @@
 import mongoose, { get } from "mongoose";
 import notFoundItem from "../utils/notFoundItem.js";
 import Resume from "../models/Resume.js";
-import { signedUrl, uploadFileToS3} from "../utils/awsS3.js";
+import { signedUrl, uploadFileToS3, deleteFilesFromS3} from "../utils/awsS3.js";
 
 const resumeController = {
 
@@ -85,9 +85,28 @@ const resumeController = {
         }catch(error){
             next(error)
         }
-    }
+    },
 
-    
+    deleteResume : async (req, res, next) => {
+        try{
+            
+            const {key} = req.params;
+            if(!key){
+                res.code = 404;
+                throw new Error("Key not found");
+            }
+
+            const file  = await deleteFilesFromS3(key);
+            res.status(200).json({
+                status: true,
+                message: "Resume download link generated successfully",
+                data: { file },
+            });
+            
+        }catch(error){
+            next(error);
+        }
+    }
 
 }
 
