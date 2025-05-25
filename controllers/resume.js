@@ -97,6 +97,14 @@ const resumeController = {
             }
 
             const file  = await deleteFilesFromS3(key);
+
+            if(!file){
+                return res.status(404).json({
+                    status: false,
+                    message: "File not found or failed to delete",
+                });
+            }
+            
             res.status(200).json({
                 status: true,
                 message: "Resume deleted successfully",
