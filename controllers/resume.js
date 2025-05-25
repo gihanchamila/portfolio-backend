@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
+import mongoose, { get } from "mongoose";
 import notFoundItem from "../utils/notFoundItem.js";
 import Resume from "../models/Resume.js";
-import { signedUrl, uploadFileToS3 } from "../utils/awsS3.js";
+import { signedUrl, uploadFileToS3} from "../utils/awsS3.js";
 
 const resumeController = {
 
@@ -71,6 +71,23 @@ const resumeController = {
             next(error);
         }
     },
+
+    getResumes : async (req, res, next) => {
+        try{
+            const resumes = await Resume.find({}).sort({ createdAt: -1 });
+
+            res.status(200).json({
+                status: true,
+                message: "Resumes retrieved successfully",
+                data: resumes,
+            });
+
+        }catch(error){
+            next(error)
+        }
+    }
+
+    
 
 }
 
