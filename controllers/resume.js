@@ -2,6 +2,7 @@ import mongoose, { get } from "mongoose";
 import notFoundItem from "../utils/notFoundItem.js";
 import Resume from "../models/Resume.js";
 import { signedUrl, uploadFileToS3, deleteFilesFromS3} from "../utils/awsS3.js";
+import User from "../models/User.js";
 
 const resumeController = {
 
@@ -72,6 +73,61 @@ const resumeController = {
         }
     },
 
+    downloadCurrentResume: async (req, res, next) => {
+    try {
+        const resume = await Resume.findOne({});
+        notFoundItem(resume);
+
+        const url = await signedUrl(resume.file);
+
+        res.status(200).json({
+            status: true,
+            message: "Resume download link generated successfully",
+            data: { url },
+        });
+    } catch (error) {
+        next(error);
+    }
+    },
+
+    requestResumeDownload: async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({
+                status: false,
+                message: "Email is required",
+            });
+        }
+
+        const user = await User.findOne({ email });
+        if (!user || !user.isVerified) {
+            return res.status(400).json({
+                status: false,
+                message: "Email not verified. Please verify your email first.",
+            });
+        }
+
+        const resume = await Resume.findOne({});
+        notFoundItem(resume);
+
+        const url = await signedUrl(resume.file);
+        
+        await sendMail({
+            emailTo: email,
+            subject: "Resume Download Link",
+            content: `Here is the link to download the resume: ${url}`,
+        });
+
+        res.status(200).json({
+            status: true,
+            message: "Resume download link sent to your email.",
+        });
+        } catch (error) {
+            next(error);
+        }
+    },
+
     getResumes : async (req, res, next) => {
         try{
             const resumes = await Resume.find({}).sort({ createdAt: -1 });
@@ -111,8 +167,8 @@ const resumeController = {
         }catch(error){
             next(error);
         }
-    }
-
+    },
+    
 }
 
 export default resumeController;
