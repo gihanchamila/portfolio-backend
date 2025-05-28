@@ -1,8 +1,13 @@
 import jwt from "jsonwebtoken";
 import { jwtSecret } from "../config/keys.js";
 
+// This is checking the user is authenticated
+// Only for admin the authentication required, not other website visitors
+// Uses jwt authentication
+
 export const isAuth = async(req, res, next) => {
     try{
+        
         const authorization = req.headers.authorization? req.headers.authorization.split(" ") : []
         const token = authorization.length > 1 ? authorization[1] : null
 

@@ -2,6 +2,8 @@ import mongoose from "mongoose";
 import { connectionUrl } from "../config/keys.js";
 
 // connect mongodb
+// This use connectionurl imported from keys.js
+
 const connectMongodb = async () => {
     try {
         if (!connectionUrl) {
