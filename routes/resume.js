@@ -14,6 +14,7 @@ router.get("/get-resumes", isAuth, isAdmin, resumeController.getResumes)
 router.post("/upload", isAuth, isAdmin, upload.single("resume"), resumeController.uploadResume);
 router.get("/download/:id", idValidator, validate, resumeController.downloadResume);
 router.get("/", resumeController.getResumes);
+router.post("/request", resumeController.requestResumeDownload)
 router.delete("/delete/:key", isAuth, isAdmin, resumeController.deleteResume);
 
 export default router;

@@ -3,6 +3,8 @@ import notFoundItem from "../utils/notFoundItem.js";
 import Resume from "../models/Resume.js";
 import { signedUrl, uploadFileToS3, deleteFilesFromS3} from "../utils/awsS3.js";
 import User from "../models/User.js";
+import { sendMail } from "../utils/sendEmail.js";
+import { shortenUrl } from "../utils/shortenUrl.js";
 
 const resumeController = {
 
@@ -100,23 +102,18 @@ const resumeController = {
             });
         }
 
-        const user = await User.findOne({ email });
-        if (!user || !user.isVerified) {
-            return res.status(400).json({
-                status: false,
-                message: "Email not verified. Please verify your email first.",
-            });
-        }
-
         const resume = await Resume.findOne({});
         notFoundItem(resume);
 
         const url = await signedUrl(resume.file);
+        const shortUrl = await shortenUrl(url);
         
         await sendMail({
             emailTo: email,
             subject: "Resume Download Link",
-            content: `Here is the link to download the resume: ${url}`,
+            content: `Here is the link to download the resume: ${shortUrl}`,
+            url : shortUrl,
+            resume
         });
 
         res.status(200).json({
