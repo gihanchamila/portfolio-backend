@@ -26,17 +26,22 @@ const userController = {
             const { email, name } = req.body;
     
             const code = generateCode(6);
+            let count = 10;
     
             let user = await User.findOne({ email });
             const now = new Date().getTime();
-            const cooldownPeriod = 1 * 60 * 1000; 
+            const cooldownPeriod = count * 60 * 1000; 
 
             if (user) {
                 const cooldownLimit = new Date(now - cooldownPeriod);
+                if (user.lastCodeSentAt && user.lastCodeSentAt < cooldownLimit) {
+                user.code = null;
+                
+                }
                 if (user.lastCodeSentAt && user.lastCodeSentAt > cooldownLimit) {
                     return res.status(429).json({
                         status: false,
-                        message: "Verification code was already sent. Please wait 10 minutes before requesting a new code."
+                        message: `Verification code was already sent. Please wait ${count} minutes before requesting a new code.`
                     });
                 }
     
