@@ -9,11 +9,3 @@ export const createUserValidator = [
         .normalizeEmail() 
         .trim(),
 ]
-
-export const userEmailValidator = [
-    check("email")
-        .notEmpty()
-        .withMessage("Email is required")
-        .isEmail()
-        .trim()
-]
