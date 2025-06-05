@@ -40,8 +40,8 @@ app.use(morgan("dev"));
 app.use("/api/v1/certificate", certificateRoute)
 app.use("/api/v1/file", fileRoute)
 app.use("/api/v1/project", projectRoute)
-app.use("/api/v1/resume", rateLimit, resumeRoute)
-app.use("/api/v1/connect",rateLimit, contactRoute)
+app.use("/api/v1/resume",  resumeRoute)
+app.use("/api/v1/connect", contactRoute)
 app.use("/api/v1/user", userRoute)
 app.use("/api/v1/admin", adminRoute)
 
