@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 import morgan from "morgan"; //Morgan logs HTTP requests for monitoring and debugging.
 import { frontendUrl } from "./config/keys.js";
 import { errorHandler } from "./middlewares/errorHandler.js";
+import rateLimit from "express-rate-limit";
 
 //import mongodb connection
 import connectMongodb from "./init/mongodb.js";
@@ -39,8 +40,8 @@ app.use(morgan("dev"));
 app.use("/api/v1/certificate", certificateRoute)
 app.use("/api/v1/file", fileRoute)
 app.use("/api/v1/project", projectRoute)
-app.use("/api/v1/resume", resumeRoute)
-app.use("/api/v1/connect", contactRoute)
+app.use("/api/v1/resume", rateLimit, resumeRoute)
+app.use("/api/v1/connect",rateLimit, contactRoute)
 app.use("/api/v1/user", userRoute)
 app.use("/api/v1/admin", adminRoute)
 
