@@ -75,7 +75,7 @@ const certificateController = {
                 code : 200, 
                 status : true, 
                 message : "Get certifications successfully", 
-                data : {certifications, total, pages}
+                data : {certifications, total, pages, size}
             })
 
         }catch(error){
