@@ -23,7 +23,7 @@ const userController = {
 
     sendVerificationCode: async (req, res, next) => {
         try {
-            const { email, username } = req.body;
+            const { email, name } = req.body;
     
             const code = generateCode(6);
     
@@ -53,6 +53,7 @@ const userController = {
                 emailTo: email,
                 subject: "Email Verification Code",
                 content: `Your verification code is: ${code}`,
+                name,
                 code
             });
     
@@ -68,7 +69,7 @@ const userController = {
 
     verifyUser: async (req, res, next) => {
         try {
-            const { email, code } = req.body;
+            const { email, code} = req.body;
 
             const user = await User.findOne({ email });
 
