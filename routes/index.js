@@ -4,5 +4,6 @@ import projectRoute from "./project.js";
 import resumeRoute from "./resume.js";
 import contactRoute from "./contact.js";
 import userRoute from "./user.js";
+import adminRoute from "./admin.js";
 
-export {certificateRoute, fileRoute, projectRoute, resumeRoute, contactRoute, userRoute};
+export {certificateRoute, fileRoute, projectRoute, resumeRoute, contactRoute, userRoute, adminRoute};

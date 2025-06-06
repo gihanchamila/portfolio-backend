@@ -5,22 +5,28 @@ import Contact from "../models/Contact.js";
 import notFoundItem from "../utils/notFoundItem.js";
 
 const userController = {
+
     sendVerificationCode: async (req, res, next) => {
         try {
-            const { email } = req.body;
+            const { email, name } = req.body;
     
             const code = generateCode(6);
+            let count = 10;
     
             let user = await User.findOne({ email });
             const now = new Date().getTime();
-            const cooldownPeriod = 1 * 60 * 1000; // 1 minute
+            const cooldownPeriod = count * 60 * 1000; 
 
             if (user) {
                 const cooldownLimit = new Date(now - cooldownPeriod);
+                if (user.lastCodeSentAt && user.lastCodeSentAt < cooldownLimit) {
+                user.code = null;
+                
+                }
                 if (user.lastCodeSentAt && user.lastCodeSentAt > cooldownLimit) {
                     return res.status(429).json({
                         status: false,
-                        message: "Verification code was already sent. Please wait 10 minutes before requesting a new code."
+                        message: `Verification code was already sent. Please wait ${count} minutes before requesting a new code.`
                     });
                 }
     
@@ -37,13 +43,14 @@ const userController = {
                 emailTo: email,
                 subject: "Email Verification Code",
                 content: `Your verification code is: ${code}`,
-                name: "User",
+                name,
                 code
             });
     
             res.status(200).json({
                 status: true,
-                message: "Verification code sent successfully"
+                message: "Verification code sent successfully",
+                user
             });
         } catch (error) {
             next(error);
@@ -52,7 +59,7 @@ const userController = {
 
     verifyUser: async (req, res, next) => {
         try {
-            const { email, code } = req.body;
+            const { email, code} = req.body;
 
             const user = await User.findOne({ email });
 

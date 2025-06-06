@@ -1,7 +1,10 @@
-import mongoose from "mongoose";
+import mongoose, { get } from "mongoose";
 import notFoundItem from "../utils/notFoundItem.js";
 import Resume from "../models/Resume.js";
-import { signedUrl, uploadFileToS3 } from "../utils/awsS3.js";
+import { signedUrl, uploadFileToS3, deleteFilesFromS3} from "../utils/awsS3.js";
+import User from "../models/User.js";
+import { sendMail } from "../utils/sendEmail.js";
+import { shortenUrl } from "../utils/shortenUrl.js";
 
 const resumeController = {
 
@@ -72,6 +75,97 @@ const resumeController = {
         }
     },
 
+    downloadCurrentResume: async (req, res, next) => {
+    try {
+        const resume = await Resume.findOne({});
+        notFoundItem(resume);
+
+        const url = await signedUrl(resume.file);
+
+        res.status(200).json({
+            status: true,
+            message: "Resume download link generated successfully",
+            data: { url },
+        });
+    } catch (error) {
+        next(error);
+    }
+    },
+
+    requestResumeDownload: async (req, res, next) => {
+    try {
+        const { email } = req.body;
+        if (!email) {
+            return res.status(400).json({
+                status: false,
+                message: "Email is required",
+            });
+        }
+
+        const resume = await Resume.findOne({});
+        notFoundItem(resume);
+
+        const url = await signedUrl(resume.file);
+        const shortUrl = await shortenUrl(url);
+        
+        await sendMail({
+            emailTo: email,
+            subject: "Resume Download Link",
+            content: `Here is the link to download the resume: ${shortUrl}`,
+            url : shortUrl,
+            resume
+        });
+
+        res.status(200).json({
+            status: true,
+            message: "Resume download link sent to your email.",
+        });
+        } catch (error) {
+            next(error);
+        }
+    },
+
+    getResumes : async (req, res, next) => {
+        try{
+            const resumes = await Resume.find({}).sort({ createdAt: -1 });
+
+            res.status(200).json({
+                status: true,
+                message: "Resumes retrieved successfully",
+                data: resumes,
+            });
+
+        }catch(error){
+            next(error)
+        }
+    },
+
+    deleteResume : async (req, res, next) => {
+        try{
+            
+            const { key } = req.params;
+            const file = await Resume.findOne({
+                file: key
+            });
+            
+            if(!key || !file){
+                res.code = 404;
+                throw new Error("Resume not found");
+            }
+
+            await deleteFilesFromS3(key);
+            await Resume.findOneAndDelete({ file: key });
+
+            res.status(200).json({
+                status: true,
+                message: "Resume deleted successfully",
+            });
+
+        }catch(error){
+            next(error);
+        }
+    },
+    
 }
 
 export default resumeController;

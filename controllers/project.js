@@ -1,5 +1,6 @@
 import File from "../models/File.js";
 import Project from "../models/Project.js"
+import { deleteFilesFromS3 } from "../utils/awsS3.js";
 
 import notFoundItem from "../utils/notFoundItem.js";
 
@@ -60,7 +61,7 @@ const projectController = {
 
             const {size, q, page} = req.query;
             const pageNumber = parseInt(page) || 1
-            const sizeNumber = parseInt(size) || 3
+            const sizeNumber = parseInt(size) || 4
             let query = {}
 
             if(q){
@@ -134,8 +135,18 @@ const projectController = {
 
             const { id } = req.params;
 
-            const project = await Project.findByIdAndDelete(id)
-            notFoundItem(project, res, "Project")
+            const project = await Project.findById(id);
+            notFoundItem(project, res, "Project");
+
+            if (project.file) {
+                const file = await File.findById(project.file);
+                if (file && file.key) {
+                    await deleteFilesFromS3(file.key);
+                    await File.findByIdAndDelete(file._id);
+                }
+            }
+
+            await Project.findByIdAndDelete(id);
 
             res.status(200).json({
                 code: 200,

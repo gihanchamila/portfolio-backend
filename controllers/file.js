@@ -12,20 +12,16 @@ const fileController = {
 
     uploadFile: async (req, res, next) => {
         try {
-            // Check if the file is provided in the request
             const { base64Image} = req.body;
             const { file } = req;
-            
-            // Make sure the file is either base64 or a file object
+
             let buffer, ext, isValidExt;
             
-            // If base64 image is provided
             if (base64Image) {
 
-                // Extract base64 data and convert to buffer
                 const base64Data = base64Image.replace(/^data:image\/\w+;base64,/, "");
                 buffer = Buffer.from(base64Data, 'base64');
-                ext = base64Image.split(';')[0].split('/')[1]; // Extract extension without leading dot
+                ext = base64Image.split(';')[0].split('/')[1];
                 isValidExt = validateExtention(`.${ext}`);
 
                 if (!isValidExt) {
@@ -33,10 +29,8 @@ const fileController = {
                 }
 
             } else if (file) {
-                // If file object is provided
-                // Extract buffer, extension and validate extension
                 buffer = file.buffer; 
-                ext = path.extname(file.originalname).replace('.', ''); // Get extension without leading dot
+                ext = path.extname(file.originalname).replace('.', '');
                 isValidExt =validateExtention(`.${ext}`);
                 if (!isValidExt) {
                     return res.status(400).json({ code: 400, status: false, message: "Only 'jpg', 'jpeg' or 'png' is allowed" });
