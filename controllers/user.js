@@ -6,21 +6,6 @@ import notFoundItem from "../utils/notFoundItem.js";
 
 const userController = {
 
-    checkVerification: async (req, res, next) => {
-        try{
-            const {email} = req.body;
-            const user = await User.findOne({email}).select("isVerified")
-
-            res.status(200).json({
-                status : true,
-                user
-            })
-
-        }catch(error){
-            next(error)
-        }
-    },
-
     sendVerificationCode: async (req, res, next) => {
         try {
             const { email, name } = req.body;
