@@ -1,4 +1,4 @@
-import { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand } from "@aws-sdk/client-s3";
+import { PutObjectCommand, S3Client, GetObjectCommand, DeleteObjectCommand, DeleteObjectsCommand } from "@aws-sdk/client-s3";
 import { awsAccessKey, awsSecretAccessKey, awsBucketName, awsRegion } from "../config/keys.js";
 import { generateCode } from "./generateCode.js";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
@@ -57,9 +57,11 @@ export const signedUrl = async(Key) => {
     }
 }
 
-// Function to delete files from S3
-// This function will take a key as an argument
-// This function will delete the file from S3
+/**
+ * Deletes a SINGLE file from AWS S3.
+ * @param {string} key - The key of the single object to delete.
+ */
+
 export const deleteFilesFromS3 = async(Key) => {
     const params = {
         Bucket : awsBucketName,
@@ -75,3 +77,26 @@ export const deleteFilesFromS3 = async(Key) => {
         console.log(error)
     }
 }
+
+/**
+ * Deletes MULTIPLE files from AWS S3 in a single batch request.
+ * @param {string[]} keys - An array of object keys to delete.
+ */
+export const deleteMultipleFilesFromS3 = async (keys) => {
+    if (!keys || keys.length === 0) return;
+
+    const objectsToDelete = keys.map(key => ({ Key: key }));
+    const params = {
+        Bucket: awsBucketName,
+        Delete: {
+            Objects: objectsToDelete,
+        },
+    };
+    const command = new DeleteObjectsCommand(params);
+    try {
+        await client.send(command);
+    } catch (error) {
+        console.error("Error during S3 batch deletion:", error);
+        throw error;
+    }
+};

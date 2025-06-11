@@ -114,7 +114,31 @@ const fileController = {
         }catch(error){
             next(error)
         }
-    }
+    },
+
+    deleteFileById: async (req, res, next) => {
+        try {
+            const { id } = req.params;
+            if (!id) {
+                return res.status(400).json({ message: "File ID is required." });
+            }
+
+            const file = await File.findById(id);
+
+            if (!file) {
+                return res.status(200).json({ status: true, message: "File already deleted or not found." });
+            }
+
+            await deleteFilesFromS3([file.key]);
+            await File.findByIdAndDelete(id);
+            
+            res.status(200).json({ status: true, message: "File deleted successfully" });
+        } catch (error) {
+            console.error("--- DELETE FILE BY ID CRASHED ---");
+            console.error(error);
+            next(error);
+        }
+    },
 
 }
 

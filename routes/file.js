@@ -10,5 +10,6 @@ const router = express.Router();
 router.post("/upload", isAuth, isAdmin, upload.single("image"), fileController.uploadFile);
 router.get("/signed-url", fileController.getSignedUrl);
 router.delete("/delete",isAuth, isAdmin, fileController.deleteFile);
+router.delete('/delete-by-id/:id', fileController.deleteFileById);
 
 export default router;

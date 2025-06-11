@@ -5,9 +5,7 @@ export const createProjectValidator = [
     check("subtitle").notEmpty().withMessage("Subtitle is required"),
     check("description").notEmpty().withMessage("Description is required"),
     check("projectUrl").notEmpty().withMessage("ProjectUrl is required") .isURL({ protocols: ['http', 'https'], require_protocol: true }).withMessage("Invalid project URL"),
-
     check("githubUrl").notEmpty().withMessage("GithubUrl is required").isURL({ protocols: ['http', 'https'], require_protocol: true }).withMessage("Invalid GitHub URL").matches(/^https:\/\/github\.com\//).withMessage("GitHub URL must start with 'https://github.com/'"),
-    
     check("file").notEmpty().withMessage("file is required"),
 ]
 
