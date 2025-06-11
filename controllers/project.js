@@ -152,6 +152,9 @@ const projectController = {
     deleteProject : async (req, res, next) => {
         try{
 
+            // http://localhost:8000/api/v1/project/delete-project/67e43716cacaef921bd26158
+            // /delete-project/:id
+
             const { id } = req.params;
 
             const project = await Project.findById(id);
