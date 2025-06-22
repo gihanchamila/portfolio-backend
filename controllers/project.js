@@ -19,7 +19,7 @@ const projectController = {
                 title,
                 subtitle,
                 description,
-                projectUrl,
+                projectUrl: projectUrl?.trim() || undefined,
                 githubUrl,
                 techStack, 
                 file, 
